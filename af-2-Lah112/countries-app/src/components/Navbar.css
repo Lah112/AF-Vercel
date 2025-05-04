@@ -1,0 +1,45 @@
+/* components/Navbar.css */
+.custom-navbar {
+  background: linear-gradient(135deg, #1f2a36, #0d1117);
+  border-bottom: 1px solid #4c566a;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  font-family: 'Poppins', sans-serif;
+}
+
+.brand-title {
+  color: #58a6ff;
+  font-size: 2rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.brand-title:hover {
+  color: #c3d1d9;
+}
+
+.navbar-nav .nav-link {
+  color: #e6edf3;
+  font-weight: 600;
+  margin-left: 1.5rem;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #58a6ff;
+  transform: translateY(-3px);
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.custom-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23e6edf3' viewBox='0 0 30 30'%3E%3Cpath d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  transition: transform 0.3s ease;
+}
+
+.navbar-toggler:hover .custom-toggler-icon {
+  transform: rotate(90deg);
+}
