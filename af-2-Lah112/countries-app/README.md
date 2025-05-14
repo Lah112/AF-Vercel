@@ -52,7 +52,7 @@ npm run test:unit ---for unit testing
 npm run test:integration---for integration testing
 
 =========================================================================
-Host:https://countries-r3odv9f39-lah112s-projects.vercel.app/
+Host:https://countries-g4zccmoct-lah112s-projects.vercel.app/
 =========================================================================
 
 Project Report: REST Countries React Application
