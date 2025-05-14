@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllCountries } from './services/countriesAPI';
 import { getSessionData, clearSessionData } from './services/session';
-import { addFavorite, removeFavorite, getFavorites } from './services/favorites'; // Import favorite functions
+import { addFavorite, removeFavorite, getFavorites } from './services/favorites';
 import LoginPage from './services/LoginPage';
 import Navbar from './components/Navbar';
 import './App.css';
@@ -14,9 +14,8 @@ function App() {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [favorites, setFavoritesList] = useState([]);
-  const [showFavoritesList, setShowFavoritesList] = useState(false); // New state for toggling favorite list view
+  const [showFavoritesList, setShowFavoritesList] = useState(false);
 
-  // On initial load, check session
   useEffect(() => {
     const user = getSessionData('user');
     if (user) {
@@ -24,10 +23,8 @@ function App() {
     }
   }, []);
 
-  // Fetch countries once logged in
   useEffect(() => {
     if (!isLoggedIn) return;
-
     const fetchCountries = async () => {
       try {
         const data = await getAllCountries();
@@ -44,12 +41,10 @@ function App() {
     fetchCountries();
   }, [isLoggedIn]);
 
-  // Fetch favorite countries from localStorage
   useEffect(() => {
     setFavoritesList(getFavorites());
   }, []);
 
-  // Filter countries based on region and search term
   useEffect(() => {
     let filtered = [...countries];
     if (region !== 'All') {
@@ -63,29 +58,24 @@ function App() {
     setFilteredCountries(filtered);
   }, [region, searchTerm, countries]);
 
-  // Handle Add/Remove favorite
   const toggleFavorite = (country) => {
     if (favorites.some(fav => fav.cca3 === country.cca3)) {
       removeFavorite(country);
-      setFavoritesList(getFavorites());
     } else {
       addFavorite(country);
-      setFavoritesList(getFavorites());
     }
+    setFavoritesList(getFavorites());
   };
 
-  // Handle Logout
   const handleLogout = () => {
     clearSessionData('user');
     setIsLoggedIn(false);
   };
 
-  // Show login page if not logged in
   if (!isLoggedIn) {
     return <LoginPage onLogin={() => setIsLoggedIn(true)} />;
   }
 
-  // Show favorite countries page
   const renderFavorites = () => {
     return (
       <div className="container mt-4">
@@ -96,7 +86,7 @@ function App() {
               <div
                 key={country.cca3}
                 className="col-md-3 mb-4"
-                onClick={() => setSelectedCountry(country)} // Only trigger modal when clicking the card
+                onClick={() => setSelectedCountry(country)}
                 style={{ cursor: 'pointer' }}
               >
                 <div className="card h-100">
@@ -110,8 +100,8 @@ function App() {
                     <button
                       className="btn btn-warning"
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevent modal from opening
-                        toggleFavorite(country); // Handle favorite removal
+                        e.stopPropagation();
+                        toggleFavorite(country);
                       }}
                     >
                       Remove from Favorites
@@ -128,14 +118,12 @@ function App() {
     );
   };
 
-  // Main app
   return (
     <div className="App">
       <Navbar />
       <div className="container mt-4">
         <button className="btn btn-danger mb-3" onClick={handleLogout}>Logout</button>
 
-        {/* Search and Filter */}
         <div className="form-group" id="search">
           <label>Search by Country Name:</label>
           <input
@@ -161,7 +149,6 @@ function App() {
           </select>
         </div>
 
-        {/* Display Countries */}
         <div className="row">
           {filteredCountries.length > 0 ? (
             filteredCountries.map((country) => (
@@ -169,6 +156,7 @@ function App() {
                 key={country.cca3}
                 className="col-md-3 mb-4"
                 style={{ cursor: 'pointer' }}
+                onClick={() => setSelectedCountry(country)}
               >
                 <div className="card h-100">
                   <img
@@ -178,8 +166,16 @@ function App() {
                   />
                   <div className="card-body">
                     <h5 className="card-title">{country.name.common}</h5>
-                    <button className="btn btn-primary" onClick={() => toggleFavorite(country)}>
-                      {favorites.some(fav => fav.cca3 === country.cca3) ? 'Remove from Favorites' : 'Add to Favorites'}
+                    <button
+                      className="btn btn-primary"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFavorite(country);
+                      }}
+                    >
+                      {favorites.some(fav => fav.cca3 === country.cca3)
+                        ? 'Remove from Favorites'
+                        : 'Add to Favorites'}
                     </button>
                   </div>
                 </div>
@@ -190,12 +186,10 @@ function App() {
           )}
         </div>
 
-        {/* Favorite Countries Section */}
         <button className="btn btn-secondary mb-3" onClick={() => setShowFavoritesList(!showFavoritesList)}>
           {showFavoritesList ? 'Hide Favorites' : 'Show Favorites'}
         </button>
 
-        {/* Conditionally render favorites */}
         {showFavoritesList && renderFavorites()}
       </div>
 
@@ -214,7 +208,7 @@ function App() {
               <p><strong>Subregion:</strong> {selectedCountry.subregion || 'N/A'}</p>
               <p><strong>Population:</strong> {selectedCountry.population.toLocaleString()}</p>
               <p><strong>Languages:</strong> {selectedCountry.languages ? Object.values(selectedCountry.languages).join(', ') : 'N/A'}</p>
-              <button className="close-btn" onClick={() => setSelectedCountry(null)}>Close</button>
+              <button className="btn btn-dark mt-2" onClick={() => setSelectedCountry(null)}>Close</button>
             </div>
           </div>
         </div>
